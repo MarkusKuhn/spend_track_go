@@ -9,17 +9,23 @@ import (
 	"github.com/joho/godotenv"
 )
 
+import "../../pkg/api/transactions"
+
 func main() {
-	r := gin.Default()
+	router := gin.Default()
 	var port string = getEnvVariable("SERVER_PORT")
 	var portString string = fmt.Sprintf(":%s", port)
 
-	r.GET("/", func(c *gin.Context) {
+	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "index"})
 	})
 
+	router.GET("/transactions", func(c *gin.Context) {
+		c.JSON(200, gin.H{"transactions": transactions.GetTransactions()})
+	})
+
 	log.Print(fmt.Sprintf("Running on port: %s", portString))
-	r.Run(portString)
+	router.Run(portString)
 }
 
 func getEnvVariable(key string) string {
