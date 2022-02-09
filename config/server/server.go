@@ -3,16 +3,15 @@ package server
 import (
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"spend_track_go/api/transactions"
+	"spend_track_go/helpers/utilities"
 )
 
 func Start() {
-	var port string = getEnvVariable("SERVER_PORT")
+	var port string = utilities.GetEnvVariable("SERVER_PORT")
 	var portString string = fmt.Sprintf(":%s", port)
 
 	router := initializeNewRouter()
@@ -53,14 +52,4 @@ func configureMiddleware(router *gin.Engine) {
 			},
 		),
 	)
-}
-
-func getEnvVariable(key string) string {
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatal("Could not load .env file")
-	}
-
-	return os.Getenv(key)
 }
